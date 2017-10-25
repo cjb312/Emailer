@@ -1,13 +1,32 @@
 const express = require("express");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const keys = require("./config/keys");
 
 const app = express();
-// clientId 1001015389641-4jsrfs4l59f33r3f8k4pb3r3co11qrom.apps.googleusercontent.com
-// clientSecret xryaATPX9eFFF7ccGciI7WYG
 
-//Creating new instance of google passport strategy
-passport.use(new GoogleStrategy());
+//Creating new instance of google passport strategy. Passing callback url for once user sign in is complete
+passport.use(
+	new GoogleStrategy(
+		{
+			clientID: keys.googleClientID,
+			clientSecret: keys.googleClientSecret,
+			callbackURL: "/auth/google/callback"
+		},
+		accessToken => {
+			console.log(accessToken);
+		}
+	)
+);
+
+// Passport authenticates user coming in on this route usuing strategy called google.
+// The strategy from the string google stems from GoogleStrategy above.
+app.get(
+	"/auth/google",
+	passport.authenticate("google", {
+		scope: ["profile", "email"]
+	})
+);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT);
