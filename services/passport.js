@@ -6,7 +6,18 @@ const keys = require("../config/keys");
 //1 arg = trying to fetch from mongoose, 2 args = trying load into mongoose
 const User = mongoose.model("users");
 
-//Creating new instance of google passport strategy. Passing callback url for once user sign in is complete
+passport.serializeUser((user, done) => {
+	done(null, user.id); // user.id is making use of the id of the record that's assinged by mongo
+});
+
+passport.deserializeUser((id, done) => {
+	User.findById(id).then(user => {
+		done(null, user);
+	});
+});
+
+// Creating new instance of google passport strategy.
+// If a user is already in the database their token will be matched with the id upon sign in otherwise a new token is created for a new user
 passport.use(
 	new GoogleStrategy(
 		{
