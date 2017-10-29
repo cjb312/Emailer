@@ -10,6 +10,8 @@ mongoose.connect(keys.mongoURI);
 
 const app = express();
 
+
+
 // Telling express it needs to make use of cookies inside the app
 app.use(
 	cookieSession({
@@ -19,6 +21,7 @@ app.use(
 );
 
 app.use(passport.initialize());
+
 app.use(passport.session());
 
 // Requiring this returns a function that is immediately calls it with app
