@@ -12,7 +12,13 @@ module.exports = app => {
 
 	// The googleStrategy will handle the request differently will exchange the code for the actual user profile
 	app.get("/auth/google/callback", passport.authenticate("google"));
-	
+
+	// Taking cookie and killing it
+	app.get("/api/logout", (req, res) => {
+		req.logout();
+		res.send(req.user);
+	});
+
 	app.get("/api/current_user", (req, res) => {
 		res.send(req.user);
 	});
