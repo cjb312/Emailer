@@ -27,5 +27,5 @@ app.use(passport.session());
 // Requiring this returns a function that is immediately calls it with app
 require("./routes/authRoutes")(app);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT);
