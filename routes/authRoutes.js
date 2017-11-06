@@ -22,7 +22,7 @@ module.exports = app => {
 	// Taking cookie and killing it
 	app.get("/api/logout", (req, res) => {
 		req.logout();
-		res.send(req.user);
+		res.redirect("/");
 	});
 
 	// Responding with the current user signed in
