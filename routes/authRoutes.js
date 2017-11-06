@@ -10,8 +10,14 @@ module.exports = app => {
 		})
 	);
 
-	// The googleStrategy will handle the request differently will exchange the code for the actual user profile
-	app.get("/auth/google/callback", passport.authenticate("google"));
+	// After sucessful sign in the redirect function dumps the user off at the surveys route
+	app.get(
+		"/auth/google/callback",
+		passport.authenticate("google"),
+		(req, res) => {
+			res.redirect("/surveys");
+		}
+	);
 
 	// Taking cookie and killing it
 	app.get("/api/logout", (req, res) => {
@@ -19,6 +25,7 @@ module.exports = app => {
 		res.send(req.user);
 	});
 
+	// Responding with the current user signed in
 	app.get("/api/current_user", (req, res) => {
 		res.send(req.user);
 	});
