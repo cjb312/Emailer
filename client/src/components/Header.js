@@ -15,9 +15,9 @@ class Header extends Component {
 					</li>
 				);
 			default:
-				return [
-					<li><Payments /></li>,
-					<li><a href="/api/logout">Logout</a></li>
+				return [ // Random keys just to satisfy requirements and get the error out of console
+					<li key="1"><Payments /></li>,
+					<li key="2"><a href="/api/logout">Logout</a></li>
 				];
 		}
 	}
