@@ -29,6 +29,7 @@ app.use(passport.session());
 // Requiring this returns a function that is immediately calls it with app
 require("./routes/authRoutes")(app);
 require("./routes/billingRoutes")(app);
+require("./routes/surveyRoutes")(app);
 
 // order of operations important here if the request can't be met it will just serve up index.html
 if (process.env.NODE_ENV === "production") {
