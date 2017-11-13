@@ -13,7 +13,9 @@ module.exports = app => {
 			subject,
 			body,
 			// Takes the recipients emails splits the string of emails after each comma and maps them to an array of objects of email: asdfadf@gasdf.com
-			recipients: recipients.split(",").map(email => ({email}))
+			recipients: recipients.split(",").map(email => ({email})),
+			_user: req.user.id,
+			dateSent: Date.now()
 	});
 	});	
 };
