@@ -23,7 +23,7 @@ module.exports = app => {
 		});
 		// first survey obj has subject and recipients. second survey will be the html to use inside the email
 		const mailer = new Mailer(survey, surveyTemplate(survey));
-		mailer.send();
+		await mailer.send();
 
 	});
 };
