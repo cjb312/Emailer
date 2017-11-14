@@ -2,29 +2,27 @@ const sendgrid = require("sendgrid");
 const helper = sendgrid.mail;
 const keys = require("../config/keys");
 
-// taking in list of recipients and passing to formatAddresses
 class Mailer extends helper.Mail {
 	constructor({ subject, recipients }, content) {
 		super();
 
 		this.sgApi = sendgrid(keys.sendGridKey);
-		this.from_email = new helper.Email('no-reply@emailer.com');
+		this.from_email = new helper.Email("no-reply@emaily.com");
 		this.subject = subject;
-		this.body = new helper.Context('text/html', content);
+		this.body = new helper.Content("text/html", content);
 		this.recipients = this.formatAddresses(recipients);
-		// Built in function to call addContent that creates the body
+
 		this.addContent(this.body);
 		this.addClickTracking();
 		this.addRecipients();
 	}
 
-	// for every recepient inside that array we format it with email helper and return it. this.recipients is an array of the new helper.Email
 	formatAddresses(recipients) {
-		return recipients.map(({email}) => {
+		return recipients.map(({ email }) => {
 			return new helper.Email(email);
-		})
+		});
 	}
-	// Straight from sendgrid docs
+
 	addClickTracking() {
 		const trackingSettings = new helper.TrackingSettings();
 		const clickTracking = new helper.ClickTracking(true, true);
@@ -35,20 +33,21 @@ class Mailer extends helper.Mail {
 
 	addRecipients() {
 		const personalize = new helper.Personalization();
+
 		this.recipients.forEach(recipient => {
 			personalize.addTo(recipient);
 		});
-		this.addPersonilzation(personalize);
+		this.addPersonalization(personalize);
 	}
 
 	async send() {
 		const request = this.sgApi.emptyRequest({
-			method: 'POST',
-			path: '/v3/mail/send',
+			method: "POST",
+			path: "/v3/mail/send",
 			body: this.toJSON()
 		});
 
-		const response = this.sgApi.API(request);
+		const response = await this.sgApi.API(request);
 		return response;
 	}
 }
