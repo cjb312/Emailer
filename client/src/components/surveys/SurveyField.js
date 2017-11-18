@@ -1,10 +1,11 @@
 // Field contains logic to render a single lable and text input
 import React from 'react';
 
-export default () => {
+export default ({input, label}) => {
 	return (
 		<div>
-			<input />
+			<label>{label}</label>
+			<input {...input} />
 		</div>
 		);
 };
