@@ -5,17 +5,11 @@ import { reduxForm, Field } from "redux-form";
 import SurveyField from "./SurveyField";
 import { Link } from "react-router-dom";
 import validateEmails from "../../utils/validateEmails";
-
-const FIELDS = [
-	{ label: "Survey Title", name: "title" },
-	{ label: "Subject Line", name: "subject" },
-	{ label: "Email Body", name: "body" },
-	{ label: "Recipient List", name: "emails" }
-];
+import formFields from './formFields';
 
 class SurveyForm extends Component {
 	renderFields() {
-		return _.map(FIELDS, ({ label, name }) => {
+		return _.map(formFields, ({ label, name }) => {
 			return (
 				<Field
 					key={name}
@@ -58,7 +52,7 @@ function validate(values) {
 
 	errors.emails = validateEmails(values.emails || "");
 
-	_.each(FIELDS, ({ name }) => {
+	_.each(formFields, ({ name }) => {
 		if (!values[name]) {
 			errors[name] = "You must provide a value";
 		}
@@ -69,5 +63,7 @@ function validate(values) {
 
 export default reduxForm({
 	validate: validate,
-	form: "surveyForm"
+	form: "surveyForm",
+	destroyOnUnmount:false
 })(SurveyForm);
+//destroyOnUnmount:false keeps data in its fields when a user clicks back on the review form
