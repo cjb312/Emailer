@@ -1,5 +1,6 @@
 //SurveyNew shows SurveyFrom
 import React, { Component } from "react";
+import { reduxForm } from "redux-form";
 import SurveyForm from "./SurveyForm";
 import SurveyFormReview from "./SurveyFormReview";
 
@@ -14,12 +15,18 @@ class SurveyNew extends Component {
 	// ShowFormReview being set to false either initally brings up the new survey page or when reviewing it is set to false onCancel so the user can navigate back
 	renderContent() {
 		if (this.state.showFormReview === true) {
-			return <SurveyFormReview
-				onCancel={()=>this.setState({showFormReview: false}) }
-			 />;
+			return (
+				<SurveyFormReview
+					onCancel={() => this.setState({ showFormReview: false })}
+				/>
+			);
 		}
 
-		return <SurveyForm onSurveySubmit={() => this.setState({showFormReview:true})} />;
+		return (
+			<SurveyForm
+				onSurveySubmit={() => this.setState({ showFormReview: true })}
+			/>
+		);
 	}
 
 	render() {
@@ -27,4 +34,6 @@ class SurveyNew extends Component {
 	}
 }
 
-export default SurveyNew;
+export default reduxForm({ 
+	form: "SurveyForm" 
+})(SurveyNew);
