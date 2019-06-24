@@ -1,0 +1,125 @@
+INCLUDE Irvine32.inc
+
+.data
+; Parameters for user input
+	LowGpa = 1
+	HighGpa = 400
+	LowCr = 1
+	HighCr = 30
+; Inputs of Grade Average and Credits
+	gradeAverage	DWORD ?
+	credits		DWord ?
+	courseCr		DWORD ?
+
+; Prompts
+	pGrdAvg			BYTE "Enter GPA disregarding decimal: ",0
+	pCredit			BYTE "Enter number of credits(1-30): ",0
+	pGrdAvgHigh		BYTE "Invalid GPA, too high.",0
+	pGrdAvgLow		BYTE "Invalid GPA, too low.",0
+	pCreditHigh		BYTE "Invalid credits, too high.",0
+	pCreditLow		BYTE "Invalid credits, too low.",0
+	pCourseCredits		BYTE "Enter the amount of credits for the course: ", 0
+	pOkToRegister		BYTE "Registration successful.",0
+	pNotOkToRegister	BYTE "Unable to register.",0
+
+
+.code
+main PROC
+
+	; Get grade average
+		mov edx, OFFSET pGrdAvg							; Write prompt for grade average
+		call PromptUser
+		mov gradeAverage, eax
+
+	; Check if grade average is within limits
+		cmp eax, HighGpa								; check if gradeAverage is within upper limit
+		jg	GRDAVGHIGH
+		cmp eax, LowGpa								; check if gradeAverage is within lower limit
+		jl	GRDAVGLOW
+
+	; Get credit total
+		mov edx, OFFSET pCredit							; Write prompt for credit
+		call PromptUser
+		mov credits, eax
+		
+	; Check if credits is within limits
+		mov edx, OFFSET pCourseCredits
+		call WriteString
+		call ReadInt
+		add credits, eax
+		cmp credits, HighCr							; check if credits is within upper limit
+		jg CREDITHIGH
+		cmp credits, LowCr								; check if credits is within lower limit
+		jl CREDITLOW
+
+
+	; store inputs
+		mov eax, gradeAverage						; store grade average in EAX
+		mov ebx, credits							; store credits in EBX
+		mov ecx, courseCr							; store amount of credits of the desired course
+	
+	
+	; check if ok to register
+		cmp eax, 400								
+		jbe	OKTOREGISTER
+
+    
+
+CREDItTEST:
+		
+		
+		cmp ebx, 30
+		jbe OKTOREGISTER
+		jmp NOTOKTOREGISTER
+
+GRDAVGHIGH:
+	mov edx, OFFSET pGrdAvgHigh						; Write prompt for grade average too high
+	Call WriteString
+	JMP quit
+
+GRDAVGLOW:
+	mov edx, OFFSET pGrdAvgLow						; Write prompt for grade average too low
+	Call WriteString
+	JMP quit
+
+CREDITHIGH:
+	mov edx, OFFSET pCreditHigh						; Write prompt for credit too high
+	call WriteString
+	JMP quit
+
+CREDITLOW:
+	mov edx, OFFSET pCreditLow						; Write prompt for credit too low
+	call WriteString
+	JMP quit
+
+NOTOKTOREGISTER:
+	
+	mov edx, OFFSET pNotOkToRegister					; Write prompt for not ok to register
+	call WriteString
+	JMP quit
+
+OKTOREGISTER:
+
+	mov edx, OFFSET pOkToRegister						; Write prompt for ok to register
+	call WriteString
+	JMP QUIT
+QUIT:
+	call waitMsg
+	exit
+main ENDP
+
+
+;---------------------------------------
+; PromptUser Procedure
+;
+; Prompts user and stores the integer 
+; value in the eax
+;
+;---------------------------------------
+PromptUser PROC
+	call WriteString
+	call ReadInt									; Read input for credit / gpa
+	ret
+PromptUser ENDP
+
+END main

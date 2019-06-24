@@ -12,7 +12,7 @@ class SurveyForm extends Component {
 		return _.map(formFields, ({ label, name }) => {
 			return (
 				<Field
-					key={name}
+					key={name} // hello
 					component={SurveyField}
 					type="text"
 					label={label}
